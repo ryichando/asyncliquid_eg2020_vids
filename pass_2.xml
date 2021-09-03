@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<root version="0.0.1">
+
+	<!-- config settings -->
+	<config name="shape" value="960x540"/>
+	<config name="crf" value="18"/>
+
+	<!-- import videos -->
+	<material name="title" path="output/title.mp4"/>
+	<material name="noise" path="output/noise.mp4"/>
+	<material name="discrepancy" path="output/discrepancy.mp4"/>
+	<material name="algorithm" path="output/algorithm.mp4"/>
+	<material name="dambreak" path="output/dambreak.mp4"/>
+	<material name="spray" path="output/spray.mp4"/>
+	<material name="rain" path="output/rain.mp4"/>
+	<material name="followup" path="output/followup.mp4"/>
+
+	<!-- define main scene -->
+	<stream name="main" transition="fade">
+		<reference name="title"/>
+		<reference name="noise"/>
+		<reference name="discrepancy"/>
+		<reference name="algorithm"/>
+		<reference name="followup"/>
+		<reference name="dambreak"/>
+		<reference name="spray"/>
+		<reference name="rain"/>
+		<reference name="title"/>
+	</stream>
+
+	<!-- export scenes -->
+	<export stream="main" path="main.mp4"/>
+
+</root>

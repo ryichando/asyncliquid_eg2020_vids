@@ -1,0 +1,312 @@
+<?xml version="1.0"?>
+<root version="0.0.1">
+
+	<!-- config settings -->
+	<config name="shape" value="960x540"/>
+	<config name="crf" value="0"/>
+	<ffmpeg_config name="preset" value="ultrafast"/>
+
+	<!-- global variable settings -->
+	<global name="fps" value="60"/>
+	<global name="medium_font_path" value="fonts/Roboto-Medium.ttf"/>
+	<global name="light_font_path" value="fonts/Roboto-Light.ttf"/>
+	<global name="solid_dark" value="0x222222"/>
+
+	<!-- import noise material -->
+	<material name="noise_transparent" path="render/noise/images/noise_%03d.jpg" fps="$fps"/>
+
+	<!-- import discrepancy material -->
+	<material name="discrepancy_transparent" path="render/discrepancy/images/discrepancy_%03d.jpg" fps="$fps"/>
+	<material name="mod_discrepancy_transparent" path="render/mod_discrepancy/images/mod_discrepancy_%03d.jpg" fps="$fps"/>
+
+	<!-- import dam break materials -->
+	<material name="a_dambreak_transparent" path="render/a_dam_render/images/dam_%03d.jpg" fps="$fps"/>
+	<material name="a_dambreak_color" path="render/a_dam_render/images_color/dam_color_%03d.jpg" fps="$fps"/>
+	<material name="s_dambreak_transparent" path="render/s_dam_render/images/dam_%03d.jpg" fps="$fps"/>
+
+	<!-- import spray materials -->
+	<material name="a_spray_transparent" path="render/a_spray_render/images/spray_%03d.jpg" fps="$fps"/>
+	<material name="a_spray_color" path="render/a_spray_render/images_color/spray_color_%03d.jpg" fps="$fps"/>
+	<material name="s_spray_transparent" path="render/s_spray_render/images/spray_%03d.jpg" fps="$fps"/>
+
+	<!-- import rain materials -->
+	<material name="a_rain_transparent" path="render/a_rain_render/images/rain_%03d.jpg" fps="$fps"/>
+	<material name="a_rain_color" path="render/a_rain_render/images_color/rain_color_%03d.jpg" fps="$fps"/>
+	<material name="s_rain_transparent" path="render/s_rain_render/images/rain_%03d.jpg" fps="$fps"/>
+
+	<!-- import other resouces -->
+	<material name="image_dt" path="images/dt.png" fps="$fps"/>
+	<material name="image_grid" path="images/grid.png" fps="$fps"/>
+
+	<!-- import slides -->
+	<global name="slide_time" value="1"/>
+	<material name="slide_1" path="images/slide_001.png" duration="$slide_time" fps="$fps"/>
+	<material name="slide_2" path="images/slide_002.png" duration="$slide_time" fps="$fps"/>
+	<material name="slide_3" path="images/slide_003.png" duration="$slide_time" fps="$fps"/>
+	<material name="slide_4" path="images/slide_004.png" duration="$slide_time" fps="$fps"/>
+	<material name="slide_5" path="images/slide_005.png" duration="$slide_time" fps="$fps"/>
+	<material name="slide_6" path="images/slide_006.png" duration="$slide_time" fps="$fps"/>
+	<material name="slide_7" path="images/slide_007.png" duration="$slide_time" fps="$fps"/>
+	<material name="slide_8" path="images/slide_008.png" duration="$slide_time" fps="$fps"/>
+
+	<!-- define title slide -->
+	<stream name="title">
+		<pipe>
+			<!-- set variables for title slide -->
+			<set name="x_start" value="0.12*w"/>
+			<set name="y_start" value="0.4*h"/>
+			<set name="y_gap" value="0.085*h"/>
+			<set name="aff_x_start" value="0.4*w"/>
+			<set name="name_font_size" value="0.5"/>
+			<set name="aff_font_size" value="0.35"/>
+			<set name="scale_gap" value="0.005*h"/>
+
+			<!-- main title slide -->
+			<composite name="color" duration="3" color="$solid_dark"/>
+			<composite name="drawtext" text="Asynchronous Eulerian Liquid Simulation" color="white" x="$x_start" y="0.225*h" scale="0.7" font="$medium_font_path"/>
+			<composite name="drawtext" text="Tatsuya Koike" color="white" x="$x_start" y="$y_start" scale="$name_font_size" font="$medium_font_path"/>
+			<composite name="drawtext" text="Waseda University" color="white" x="$aff_x_start" y="$y_start+$scale_gap" scale="$aff_font_size" font="$medium_font_path"/>
+			<composite name="drawtext" text="Shigeo Morishima" color="white" x="$x_start" y="$y_start+$y_gap" scale="$name_font_size" font="$medium_font_path"/>
+			<composite name="drawtext" text="Waseda University" color="white" x="$aff_x_start" y="$y_start+$y_gap+$scale_gap" scale="$aff_font_size" font="$medium_font_path"/>
+			<composite name="drawtext" text="Ryoichi Ando" color="white" x="$x_start" y="$y_start+2*$y_gap" scale="$name_font_size" font="$medium_font_path"/>
+			<composite name="drawtext" text="National Institute of Informatics" color="white" x="$aff_x_start" y="$y_start+2*$y_gap+$scale_gap" scale="$aff_font_size" font="$medium_font_path"/>
+			<filter name="drawbox">
+				<variable name="x" value="0.12*iw"/>
+				<variable name="y" value="ih*0.7"/>
+				<variable name="width" value="iw*0.33"/>
+				<variable name="height" value="ih*0.07"/>
+				<variable name="thickness" value="0.0015*iw"/>
+				<variable name="color" value="white"/>
+			</filter>
+			<composite name="drawtext" text="https\://doi.org/10.1111/cgf.13907" color="white" x="$x_start+w*0.01" y="h*0.72" scale="$aff_font_size" font="$light_font_path"/>
+		</pipe>
+	</stream>
+
+	<!-- define custom title-slide functions -->
+	<function name="title-slide-1">
+		<default name="text_1" value="First line"/>
+		<pipe>
+			<set name="text_line_gap" value="$_height_/20"/>
+			<composite name="color" duration="2" color="$solid_dark" fps="$fps"/>
+			<composite name="drawtext" text="$text_1" color="white" scale="0.7" font="$medium_font_path"/>
+		</pipe>
+	</function>
+
+	<function name="title-slide-2">
+		<default name="text_1" value="First line"/>
+		<default name="text_2" value="Second line"/>
+		<pipe>
+			<set name="text_line_gap" value="$_height_/20"/>
+			<composite name="color" duration="2" color="$solid_dark" fps="$fps"/>
+			<composite name="drawtext" text="$text_1" color="white" scale="0.7" shift_y="-$text_line_gap" font="$medium_font_path"/>
+			<composite name="drawtext" text="$text_2" color="white" scale="0.7" shift_y="$text_line_gap" font="$medium_font_path"/>
+		</pipe>
+	</function>
+
+	<function name="title-slide-3">
+		<default name="text_1" value="First line"/>
+		<default name="text_2" value="Second line"/>
+		<default name="text_3" value="Third line"/>
+		<default name="scale" value="0.7"/>
+		<default name="gap" value="1.0"/>
+		<default name="duration" value="2"/>
+		<pipe>
+			<set name="text_line_gap" value="$_height_/20"/>
+			<composite name="color" duration="$duration" color="$solid_dark" fps="$fps"/>
+			<composite name="drawtext" text="$text_1" color="white" scale="$scale" shift_y="-2*$gap*$text_line_gap" font="$medium_font_path"/>
+			<composite name="drawtext" text="$text_2" color="white" scale="$scale" shift_y="0" font="$medium_font_path"/>
+			<composite name="drawtext" text="$text_3" color="white" scale="$scale" shift_y="2*$gap*$text_line_gap" font="$medium_font_path"/>
+		</pipe>
+	</function>
+
+	<!-- define noise scene -->
+	<stream name="noise" transition="fade">
+		<composite name="title-slide-2" text_1="A large time step induces persistent" text_2="pertubation on calm surfaces"/>
+		<pipe>
+			<reference name="noise_transparent"/>
+			<composite name="overlay" x="W/20" y="H/20" scale="0.24*$_width_/1000" shortest="1">
+				<reference name="image_dt"/>
+			</composite>
+			<composite name="overlay" x="W/20" y="3.2*H/20" scale="0.24*$_width_/1000" shortest="1">
+				<reference name="image_grid"/>
+			</composite>
+		</pipe>
+	</stream>
+
+	<!-- define discrepancy scene -->
+	<function name="make_discrepancy_freeze_head_video">
+		<default name="freeze_duration" value="1"/>
+		<composite name="trim" start="0" end="$freeze_duration">
+			<composite name="extend" start_duration="$freeze_duration">
+				<input/>
+			</composite>
+		</composite>
+	</function>
+
+	<function name="make_discrepancy_stream">
+		<default name="freeze_duration" value="3"/>
+		<composite name="split" count="4">
+			<input/>
+		</composite>
+		<convert_to_inputs/>
+		<pipe>
+			<group>
+				<composite name="make_discrepancy_freeze_head_video">
+					<input index="0"/>
+				</composite>
+				<composite name="drawtext" x="W/4" y="0.27*H" text="Domain Seam" scale="0.6" font="$medium_font_path">
+					<pipe>
+						<composite name="trim" start="0" end="$freeze_duration">
+							<composite name="extend" start_duration="$freeze_duration">
+								<input index="1"/>
+							</composite>
+						</composite>
+						<composite name="overlay" x="W/2" shortest="1">
+							<composite name="color" width="eval(int(0.0035*$_width_))"/>
+						</composite>
+					</pipe>
+				</composite>
+				<composite name="make_discrepancy_freeze_head_video">
+					<input index="2"/>
+				</composite>
+				<composite name="extend" start_duration="2">
+					<composite name="drawtext" text="Slow Motion" scale="0.65" x="0.75*W" y="0.05*H" font="$medium_font_path">
+						<composite name="changespeed" factor="0.25">
+							<input index="3"/>
+						</composite>
+					</composite>
+				</composite>
+			</group>
+			<rolling>
+				<composite name="transition" type="fade"/>
+			</rolling>
+		</pipe>
+	</function>
+
+	<stream name="discrepancy" transition="fade">
+		<composite name="title-slide-2" text_1="Naive velocity advection leads to" text_2="discrepancy on domain boundaries"/>
+		<composite name="make_discrepancy_stream">
+			<reference name="discrepancy_transparent"/>
+		</composite>
+		<composite name="title-slide-1" text_1="Our method fixes the issue"/>
+		<composite name="drawtext" text="Our Method" scale="0.65" x="0.025*W" y="0.05*H" font="$medium_font_path">
+			<composite name="make_discrepancy_stream">
+				<reference name="mod_discrepancy_transparent"/>
+			</composite>
+		</composite>
+	</stream>
+
+	<!-- define algorithm scene -->
+	<stream name="algorithm" transition="fade">
+		<composite name="title-slide-1" text_1="Algorithm Overview"/>
+		<reference name="slide_1"/>
+		<reference name="slide_2"/>
+		<reference name="slide_3"/>
+		<reference name="slide_4"/>
+		<reference name="slide_5"/>
+		<reference name="slide_6"/>
+		<reference name="slide_7"/>
+		<reference name="slide_8"/>
+	</stream>
+
+	<!-- define custom scene cover function -->
+	<function name="cover">
+		<default name="title" value="Title"/>
+		<default name="subtitle_1" value="Subtitle 1"/>
+		<default name="subtitle_2" value="Subtitle 2"/>
+		<default name="duration" value="1"/>
+		<default name="gap" value="1.0"/>
+		<default name="scale" value="0.4"/>
+		<pipe>
+			<set name="text_line_gap" value="$_height_/30"/>
+			<composite name="color" duration="$duration" color="$solid_dark" fps="$fps"/>
+			<composite name="drawtext" text="$title" color="white" scale="2.0*$scale" shift_y="-3*$gap*$text_line_gap" font="$medium_font_path"/>
+			<composite name="drawtext" text="$subtitle_1" color="white" scale="$scale" shift_y="1*$gap*$text_line_gap" font="$medium_font_path"/>
+			<composite name="drawtext" text="$subtitle_2" color="white" scale="$scale" shift_y="3*$gap*$text_line_gap" font="$medium_font_path"/>
+		</pipe>
+	</function>
+
+	<!-- define dambreak scene -->
+	<stream name="dambreak" transition="fade">
+		<composite name="cover" title="Breaking Dam" subtitle_1="88 secs / frame" subtitle_2="2x speed-up on average"/>
+		<composite name="drawtext" text="Our Method" scale="0.65" x="0.025*W" y="0.05*H" font="$medium_font_path">
+			<reference name="a_dambreak_transparent"/>
+		</composite>
+		<composite name="drawtext" text="Our Method (Color)" scale="0.65" x="0.025*W" y="0.05*H" font="$medium_font_path">
+			<reference name="a_dambreak_color"/>
+		</composite>
+		<composite name="drawtext" text="Synchronous Method" scale="0.65" x="0.025*W" y="0.05*H" font="$medium_font_path">
+			<reference name="s_dambreak_transparent"/>
+		</composite>
+		<pipe>
+			<composite name="sidebyside-split">
+				<reference name="a_dambreak_transparent"/>
+				<reference name="s_dambreak_transparent"/>
+			</composite>
+			<set name="top" value="0.04"/>
+			<composite name="drawtext" text="Our Method" scale="0.7" shift_x="-w/4" y="$top*h" font="$medium_font_path"/>
+			<composite name="drawtext" text="Synchronous" scale="0.7" shift_x="w/4" y="$top*h" font="$medium_font_path"/>
+		</pipe>
+	</stream>
+
+	<!-- define spray scene -->
+	<stream name="spray" transition="fade">
+		<composite name="cover" title="Spray" subtitle_1="48.7 secs / frame" subtitle_2="2.85x speed-up on average"/>
+		<composite name="drawtext" text="Our Method" scale="0.65" x="0.025*W" y="0.05*H" font="$medium_font_path">
+			<reference name="a_spray_transparent"/>
+		</composite>
+		<composite name="drawtext" text="Our Method (Color)" scale="0.65" x="0.025*W" y="0.05*H" font="$medium_font_path">
+			<reference name="a_spray_color"/>
+		</composite>
+		<composite name="drawtext" text="Synchronous Method" scale="0.65" x="0.025*W" y="0.05*H" font="$medium_font_path">
+			<reference name="s_spray_transparent"/>
+		</composite>
+		<pipe>
+			<composite name="sidebyside-split" position="0.522">
+				<reference name="a_spray_transparent"/>
+				<reference name="s_spray_transparent"/>
+			</composite>
+			<set name="top" value="0.04"/>
+			<composite name="drawtext" text="Our Method" scale="0.7" shift_x="-w/4" y="$top*h" font="$medium_font_path"/>
+			<composite name="drawtext" text="Synchronous" scale="0.7" shift_x="w/4" y="$top*h" font="$medium_font_path"/>
+		</pipe>
+	</stream>
+
+	<!-- define rain scene -->
+	<stream name="rain" transition="fade">
+		<composite name="cover" title="Rain" subtitle_1="52.3 secs / frame" subtitle_2="6.4x speed-up on average"/>
+		<composite name="drawtext" text="Our Method" scale="0.65" x="0.025*W" y="0.05*H" font="$medium_font_path">
+			<reference name="a_rain_transparent"/>
+		</composite>
+		<composite name="drawtext" text="Our Method (Color)" scale="0.65" x="0.025*W" y="0.05*H" font="$medium_font_path">
+			<reference name="a_rain_color"/>
+		</composite>
+		<composite name="drawtext" text="Synchronous Method" scale="0.65" x="0.025*W" y="0.05*H" font="$medium_font_path">
+			<reference name="s_rain_transparent"/>
+		</composite>
+		<pipe>
+			<composite name="sidebyside-split" position="0.522">
+				<reference name="a_rain_transparent"/>
+				<reference name="s_rain_transparent"/>
+			</composite>
+			<set name="top" value="0.04"/>
+			<composite name="drawtext" text="Our Method" scale="0.7" shift_x="-w/4" y="$top*h" font="$medium_font_path"/>
+			<composite name="drawtext" text="Synchronous" scale="0.7" shift_x="w/4" y="$top*h" font="$medium_font_path"/>
+		</pipe>
+	</stream>
+
+	<stream name="followup">
+		<composite name="title-slide-3" text_1="In the following videos, meshes are color-coded by the time step size." text_2="Red color indicates the smallest time step." text_3="Yellow and blue indicate 3x and 9x longer time step sizes." scale="0.5" gap="0.8" duration="5"/>
+	</stream>
+
+	<!-- export scenes -->
+	<export stream="title" path="output/title.mp4"/>
+	<export stream="noise" path="output/noise.mp4"/>
+	<export stream="discrepancy" path="output/discrepancy.mp4"/>
+	<export stream="algorithm" path="output/algorithm.mp4"/>
+	<export stream="dambreak" path="output/dambreak.mp4"/>
+	<export stream="spray" path="output/spray.mp4"/>
+	<export stream="rain" path="output/rain.mp4"/>
+	<export stream="followup" path="output/followup.mp4"/>
+
+</root>
