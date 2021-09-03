@@ -2,7 +2,6 @@
 <root version="0.0.1">
 
 	<!-- config settings -->
-	<config name="shape" value="960x540"/>
 	<config name="crf" value="18"/>
 
 	<!-- import videos -->
